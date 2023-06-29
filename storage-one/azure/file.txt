@@ -1,0 +1,2 @@
+I'm going to get uploaded to Azure SFTP enabled blob storage.
+I will be living there for the rest of my life.
