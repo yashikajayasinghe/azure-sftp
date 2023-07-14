@@ -27,14 +27,3 @@ ssh.close()
 
 
 
-
-
-
-
-
-
-
-# connection_string = "DefaultEndpointsProtocol=https;AccountName=xxxx;AccountKey=xxxx;EndpointSuffix=core.windows.net"
-# service = ShareServiceClient.from_connection_string(conn_str=connection_string)
-# service = ShareServiceClient(account_url="https://<my-storage-account-name>.file.core.windows.net/", credential=credential)
-
