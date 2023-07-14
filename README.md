@@ -9,7 +9,7 @@ Steps:
    3. create a local user with rwldc permissions for the containr
 3. using Python sftp client library `paramiko` do a ssh file transfer to the container
 4. Via Azure CLI:
-   1. delete local use
+   1. delete local user
    2. delete container
    3. disable SFTP
 
