@@ -12,6 +12,7 @@ azure_storage_account = "sasftptestrig2"
 azure_storage_container_name = "sftpcont"+str(uuid.uuid4())
 local_username = "user"+str(int(time.time()))
 
+#TODO : Remove wait time
 
 def enable_sftp():
     # enable sftp
