@@ -1,0 +1,1 @@
+azure_cubscription_id = var.AZURE_SUBSCRIPTION_ID
