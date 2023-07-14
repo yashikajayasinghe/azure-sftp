@@ -53,7 +53,6 @@ def create_local_user():
 
     results = subprocess.run(az_cli_command_create_local_user, shell=True, capture_output=True, text=True)
     time.sleep(20)
-    print(f"STD OUT BANANA PRINTS::",results.stdout)
     json_response_local_user_create = json.loads(results.stdout)
     if not json_response_local_user_create["hasSshPassword"]:
         raise ValueError("Local user was not created")
