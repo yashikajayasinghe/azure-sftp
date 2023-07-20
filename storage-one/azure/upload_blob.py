@@ -24,6 +24,3 @@ sftp.put(local_file_path, remote_file_path)
 # Close the SFTP session and SSH connection
 sftp.close()
 ssh.close()
-
-
-
