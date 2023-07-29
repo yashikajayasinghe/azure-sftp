@@ -1,5 +1,6 @@
-azure-storage-file-share
 pytest
 paramiko
-azure-storage-file-datalake
 azure-identity
+azure-servicebus
+azure-mgmt-servicebus
+azure-mgmt-eventgrid

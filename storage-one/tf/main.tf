@@ -21,27 +21,9 @@ resource "azurerm_resource_group" "sftp_rg" {
     environment = "dev"
   }
 }
-# module "storage_account" {
-#   source  = "claranet/storage-account/azurerm"
-#   version = "~> 7.5.0"
 
-#   storage_account_custom_name = "sasftpdtestrig"
-#   environment                 = azurerm_resource_group.rg.tags.environment
-#   location                    = "East Us"
-#   location_short              = "eastus"
-#   logs_destinations_ids       = []
-#   resource_group_name         = azurerm_resource_group.rg.name
-#   sftp_enabled                = false
-#   account_tier                = "Standard"
-#   account_replication_type    = "LRS"
-#   min_tls_version             = "TLS1_2"
-#   stack                       = ""
-#   client_name                 = ""
-
-# }
-
-resource "azurerm_storage_account" "sasftptestrig2" {
-  name                     = "sasftptestrig2"
+resource "azurerm_storage_account" "sasftp" {
+  name                     = "sasftp02"
   resource_group_name      = azurerm_resource_group.sftp_rg.name
   location                 = azurerm_resource_group.sftp_rg.location
   account_tier             = "Standard"
@@ -53,5 +35,29 @@ resource "azurerm_storage_account" "sasftptestrig2" {
     environment = "dev"
   }
 }
+
+resource "azurerm_servicebus_namespace" "sevicebus_namespace" {
+  name                = "sasftp-sb-ns"
+  resource_group_name = azurerm_resource_group.sftp_rg.name
+  location            = azurerm_resource_group.sftp_rg.location
+  sku                 = "Standard"
+
+  tags = {
+    environment = "dev"
+  }
+}
+
+# resource "azurerm_eventgrid_topic" "eventgrid_topic" {
+#   name                = "sasftp-eventgrid-topic"
+#   resource_group_name = azurerm_resource_group.sftp_rg.name
+#   location            = azurerm_resource_group.sftp_rg.location
+#   input_schema        = "CloudEventSchemaV1_0"
+
+#   tags = {
+#     environment = "dev"
+#   }
+# }
+
+
 
 
