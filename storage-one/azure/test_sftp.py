@@ -108,9 +108,45 @@ def create_event_subscription_for_storage_blob_create_event(create_service_bus_q
     print("deleting event subscription "+event_subscription_name)
     eg_mgmt_client.event_subscriptions.begin_delete(scope=storage_account_resource_id, event_subscription_name=event_subscription_name)
     
+@pytest.fixture(scope="module")
+def create_dir_in_sftp_storage(setup_sftp):
 
+    hos = setup_sftp["hostname"]
+    user = setup_sftp["user_name"]
+    pwd = setup_sftp["pwd"]
+    # cont_name = setup_sftp["storage_cont_name"]
+    sftp = None
 
-def test_upload_file(setup_sftp, create_service_bus_queue: ServiceBusManagementClient, create_event_subscription_for_storage_blob_create_event):
+    try:
+        transport = paramiko.Transport((hos, 22))
+        transport.connect(username=user, password=pwd)
+        sftp = paramiko.SFTPClient.from_transport(transport)
+
+        # Create a directory in the remote storage
+        remote_path = '/'
+        sftp.chdir(remote_path)
+        sftp.mkdir('directdebit')
+        sftp.chdir('directdebit')
+        sftp.mkdir('out')
+    except paramiko.AuthenticationException as e:
+        print("Authentication failed:", str(e))
+    except paramiko.SSHException as e:
+        print("SSH error:", str(e))
+    except paramiko.sftp.SFTPError as e:
+        print("SFTP error:", str(e))
+    except FileNotFoundError as e:
+        print("File not found:", str(e))
+    except Exception as e:
+        print("Error:", str(e))
+    finally:
+        if sftp is not None:
+            print("Closing SFTP connection")
+            sftp.close()
+        if transport:
+            print("Closing Transport connection")
+            transport.close()
+
+def test_upload_file(setup_sftp, create_dir_in_sftp_storage, create_service_bus_queue: ServiceBusManagementClient, create_event_subscription_for_storage_blob_create_event):
     # Create an SSH client
     sftp_connection_info = setup_sftp
     ssh = paramiko.SSHClient()
@@ -127,7 +163,7 @@ def test_upload_file(setup_sftp, create_service_bus_queue: ServiceBusManagementC
 
     # Perform SFTP operations
     local_file_path = 'file.txt'
-    remote_file_path = '/file.txt'
+    remote_file_path = 'directdebit/out/file.txt'
     sftp.put(local_file_path, remote_file_path)
 
     # Close the SFTP session and SSH connection
